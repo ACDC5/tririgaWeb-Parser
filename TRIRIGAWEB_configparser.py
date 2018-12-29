@@ -93,7 +93,6 @@ def get_all():
 
 
 def lul_test():
-    print("Wow...a  test harness. Fucking took you long enough.")
 
     print("Dumping SSO related key/value pairs:\n\n")
     get_SSO()
