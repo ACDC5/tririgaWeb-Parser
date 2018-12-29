@@ -70,14 +70,19 @@ def get_all():
         print ("File not found")
 
 
-print("Dumping SSO related key/value pairs:\n\n")
-get_SSO()
+def lul_test():
+    print("Wow...a  test harness. Fucking took you long enough.")
 
-print ("\nDumping workflow agent related key/value pairs:\n\n")
-get_WFAgent()
+    print("Dumping SSO related key/value pairs:\n\n")
+    get_SSO()
 
-print ("\nChecking for conflicting SSO settings:\n\n")
-check_SSO()
+    print ("\nDumping workflow agent related key/value pairs:\n\n")
+    get_WFAgent()
 
-print ("\nMake sure that get_all works:\n\n")
-get_all()
+    print ("\nChecking for conflicting SSO settings:\n\n")
+    check_SSO()
+
+    print ("\nMake sure that get_all works:\n\n")
+    get_all()
+
+lul_test()
