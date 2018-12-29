@@ -1,6 +1,8 @@
+#Let's declare us some variables!
 ssoVars = {}
 agentVars = {}
 eachAndEveryVar = {}
+ssoFUBAR = False
 
 """
 This function retrieves certain SSO settings from the properties file
@@ -16,7 +18,7 @@ def get_SSO():
                 if "#" not in line:
                     if any(parm in line for parm in ssoParms):
                         key, value = line.partition("=")[::2]
-                        ssoVars[key.strip()] = value
+                        ssoVars[key.strip()] = value.strip()
     except IOError:
         print ("File not found")
     for k, v in ssoVars.items():
@@ -35,7 +37,7 @@ def get_WFAgent():
                 if "#" not in line:
                     if any(parm in line for parm in agentParms):
                         key, value = line.partition("=")[::2]
-                        agentVars[key.strip()] = value
+                        agentVars[key.strip()] = value.strip()
     except IOError:
         print ("File not found")
     for k, v in agentVars.items():
@@ -46,7 +48,15 @@ This function validates that SSO parameters aren't setup to conflict with each o
 i.e., remote_user and user_principal both being set to 'Y'
 """
 def check_SSO():
-    foo = []
+    global ssoFUBAR
+    if ssoVars.get("SSO_REMOTE_USER") is "Y" and ssoVars.get("SSO_USER_PRINCIPAL") is "Y":
+        #print ("HEY. DONT DO THAT. REMOTE_USER AND USER_PRINCIPAL CANT BOTH BE YES\n\n")
+        ssoFUBAR = True
+    else:
+        print ("All good.\n")
+        ssoFUBAR = False
+    
+
 
 """
 This function retrieves all 'useful' parameters at once. Currently unused
@@ -62,7 +72,7 @@ def get_all():
                 if "#" not in line:
                     if any(parm in line for parm in allParms):
                         key, value = line.partition("=")[::2]
-                        eachAndEveryVar[key.strip()] = value
+                        eachAndEveryVar[key.strip()] = value.strip()
     except IOError:
         print ("File not found")
     for k, v in eachAndEveryVar.items():
@@ -83,5 +93,8 @@ def lul_test():
 
     print ("\nMake sure that get_all works:\n\n")
     get_all()
+
+    if ssoFUBAR:
+        print ("SSO parameter conflicts detected. Review.")
 
 lul_test()
