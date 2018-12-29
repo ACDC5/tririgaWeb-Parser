@@ -55,7 +55,7 @@ def check_SSO():
     global ssoFUBAR
     if ssoVars.get("SSO_REMOTE_USER") is "Y" and ssoVars.get("SSO_USER_PRINCIPAL") is "Y":
         ssoFUBAR = True
-    if ssoVars.get("SSO") is "N" and not ssoVars.get("ALTERNATE_INDEX_HTML"):
+    if ssoVars.get("SSO") is "Y" and not ssoVars.get("ALTERNATE_INDEX_HTML"):
         print ("WARNING: SSO is enabled but no alt login page is defined.\n")
         print ("Unless the system user is defined in your SSO solution, it will be unaccessible for this environment when authenticating through the SSO URL.")
         ssoFUBAR = True
