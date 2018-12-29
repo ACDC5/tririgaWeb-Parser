@@ -1,6 +1,8 @@
 #Let's declare us some variables!
 ssoVars = {}
-agentVars = {}
+wfAgentVars = {}
+ssoParms = []
+agentParms = []
 eachAndEveryVar = {}
 ssoFUBAR = False
 
@@ -8,6 +10,7 @@ ssoFUBAR = False
 This function retrieves certain SSO settings from the properties file
 """
 def get_SSO():
+    global ssoParms
     #This array can be modified with specific parameters to be checked for
     ssoParms = ["SSO_"]
     try:
@@ -27,8 +30,9 @@ def get_SSO():
 This function retrieves certain Workflow agent settings from the properties file
 """
 def get_WFAgent():
+    global agentParms
     #This array can be modified with specific parameters to be checked for
-    agentParms = ["WFAgent","WF_AGENT"]
+    agentParms = ["WFAgent","WF_AGENT", "WF_INSTANCE_SAVE"]
     try:
         with open("tririgaWeb-Parser/TRIRIGAWEB.properties") as propFile:
             for line in propFile:
@@ -37,10 +41,10 @@ def get_WFAgent():
                 if "#" not in line:
                     if any(parm in line for parm in agentParms):
                         key, value = line.partition("=")[::2]
-                        agentVars[key.strip()] = value.strip()
+                        wfAgentVars[key.strip()] = value.strip()
     except IOError:
         print ("File not found")
-    for k, v in agentVars.items():
+    for k, v in wfAgentVars.items():
             print (k,v)
 
 """
@@ -50,20 +54,25 @@ i.e., remote_user and user_principal both being set to 'Y'
 def check_SSO():
     global ssoFUBAR
     if ssoVars.get("SSO_REMOTE_USER") is "Y" and ssoVars.get("SSO_USER_PRINCIPAL") is "Y":
-        #print ("HEY. DONT DO THAT. REMOTE_USER AND USER_PRINCIPAL CANT BOTH BE YES\n\n")
         ssoFUBAR = True
     else:
         print ("All good.\n")
         ssoFUBAR = False
-    
+    if ssoFUBAR:
+        print ("SSO parameter conflicts detected. Review.\n")
 
+def check_WF():
+    if wfAgentVars.get("WF_INSTANCE_SAVE") != "ERRORS_ONLY":
+        print("WARNING: Workflow instance saving is set to " + wfAgentVars.get("WF_INSTANCE_SAVE") + ". It should be set to ERRORS_ONLY")
+    else:
+        print("All good.\n")
 
 """
-This function retrieves all 'useful' parameters at once. Currently unused
+This function retrieves all 'useful' parameters at once.
 """
 
 def get_all():
-    allParms = ["WFAgent","WF_AGENT","SSO_"]
+    allParms = ssoParms + agentParms
     try:
         with open("tririgaWeb-Parser/TRIRIGAWEB.properties") as propFile:
             for line in propFile:
@@ -88,13 +97,15 @@ def lul_test():
     print ("\nDumping workflow agent related key/value pairs:\n\n")
     get_WFAgent()
 
-    print ("\nChecking for conflicting SSO settings:\n\n")
+    print ("\nChecking for conflicting SSO settings:\n")
     check_SSO()
 
-    print ("\nMake sure that get_all works:\n\n")
+    print ("\nValidating WF/WF_Agent settings:\n")
+    check_WF()
+
+    print ("\nMake sure that get_all works:\n")
     get_all()
 
-    if ssoFUBAR:
-        print ("SSO parameter conflicts detected. Review.")
+
 
 lul_test()
