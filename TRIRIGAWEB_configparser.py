@@ -12,7 +12,7 @@ This function retrieves certain SSO settings from the properties file
 def get_SSO():
     global ssoParms
     #This array can be modified with specific parameters to be checked for
-    ssoParms = ["SSO_"]
+    ssoParms = ["SSO_","ALTERNATE_INDEX_HTML","SSO="]
     try:
         with open("tririgaWeb-Parser/TRIRIGAWEB.properties") as propFile:
             for line in propFile:
@@ -55,11 +55,15 @@ def check_SSO():
     global ssoFUBAR
     if ssoVars.get("SSO_REMOTE_USER") is "Y" and ssoVars.get("SSO_USER_PRINCIPAL") is "Y":
         ssoFUBAR = True
+    if ssoVars.get("SSO") is "N" and not ssoVars.get("ALTERNATE_INDEX_HTML"):
+        print ("WARNING: SSO is enabled but no alt login page is defined.\n")
+        print ("Unless the system user is defined in your SSO solution, it will be unaccessible for this environment when authenticating through the SSO URL.")
+        ssoFUBAR = True
+    if ssoFUBAR:
+        print ("\nSSO parameter conflicts detected. Review.\n")
     else:
         print ("All good.\n")
         ssoFUBAR = False
-    if ssoFUBAR:
-        print ("SSO parameter conflicts detected. Review.\n")
 
 def check_WF():
     if wfAgentVars.get("WF_INSTANCE_SAVE") != "ERRORS_ONLY":
