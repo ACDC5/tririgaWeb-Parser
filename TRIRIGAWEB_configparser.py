@@ -17,11 +17,10 @@ def get_SSO():
                     if any(parm in line for parm in ssoParms):
                         key, value = line.partition("=")[::2]
                         ssoVars[key.strip()] = value
-
-        for k, v in ssoVars.items():
-            print (k,v)
     except IOError:
         print ("File not found")
+    for k, v in ssoVars.items():
+            print (k,v)
 """
 This function retrieves certain Workflow agent settings from the properties file
 """
@@ -37,10 +36,10 @@ def get_WFAgent():
                     if any(parm in line for parm in agentParms):
                         key, value = line.partition("=")[::2]
                         agentVars[key.strip()] = value
-        for k, v in agentVars.items():
-            print (k,v)
     except IOError:
         print ("File not found")
+    for k, v in agentVars.items():
+            print (k,v)
 
 """
 This function validates that SSO parameters aren't setup to conflict with each other
@@ -64,10 +63,10 @@ def get_all():
                     if any(parm in line for parm in allParms):
                         key, value = line.partition("=")[::2]
                         eachAndEveryVar[key.strip()] = value
-        for k, v in eachAndEveryVar.items():
-            print (k,v)
     except IOError:
         print ("File not found")
+    for k, v in eachAndEveryVar.items():
+            print (k,v)
 
 
 def lul_test():
