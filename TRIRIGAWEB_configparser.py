@@ -5,6 +5,8 @@ def get_SSO():
     try:
         with open("tririgaWeb-Parser/TRIRIGAWEB.properties") as propFile:
             for line in propFile:
+                #ignore comments and then check to see if any of the values in the parameterized array
+                #are found in the line we're currently consuming. if so, store key/value pair in dict
                 if "#" not in line:
                     if any(parm in line for parm in ssoParms):
                         param, value = line.partition("=")[::2]
@@ -22,6 +24,8 @@ def get_WFAgent():
     try:
         with open("tririgaWeb-Parser/TRIRIGAWEB.properties") as propFile:
             for line in propFile:
+                #ignore comments and then check to see if any of the values in the parameterized array
+                #are found in the line we're currently consuming. if so, store key/value pair in dict
                 if "#" not in line:
                     if any(parm in line for parm in agentParms):
                         param, value = line.partition("=")[::2]
