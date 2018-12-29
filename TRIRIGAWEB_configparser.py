@@ -10,6 +10,7 @@ def get_SSO():
     for k, v in tririgaVars.items():
         print (k,v)
 
+get_SSO()
 """
 for k, v in tririgaVars.items():
     if "Y" in v:
