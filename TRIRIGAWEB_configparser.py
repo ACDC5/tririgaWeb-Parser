@@ -5,6 +5,7 @@ ssoParms = []
 agentParms = []
 eachAndEveryVar = {}
 ssoFUBAR = False
+#test
 
 """
 This function retrieves certain SSO settings from the properties file
